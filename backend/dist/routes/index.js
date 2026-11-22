@@ -1,0 +1,20 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const waterController_1 = require("../controllers/waterController");
+const security_1 = require("../middleware/security");
+const router = (0, express_1.Router)();
+// Limit zapytań chroniący zewnętrzne publiczne API przed przeciążeniem
+const analyzeLimiter = (0, security_1.createRateLimiter)(25, 60_000);
+const lookupLimiter = (0, security_1.createRateLimiter)(60, 60_000);
+router.get('/crops', waterController_1.getCropsHandler);
+router.get('/methodology', waterController_1.getMethodologyHandler);
+router.get('/parcels/examples', waterController_1.getExampleParcelsHandler);
+router.get('/parcels/lookup', lookupLimiter, waterController_1.lookupParcelHandler);
+router.get('/parcels/search', lookupLimiter, waterController_1.searchLocationHandler);
+router.post('/analyze', analyzeLimiter, waterController_1.analyzeParcelHandler);
+router.get('/reports', waterController_1.listReportsHandler);
+router.get('/reports/:id', waterController_1.getReportHandler);
+router.get('/reports/:id/export.xlsx', waterController_1.exportReportExcelHandler);
+router.delete('/reports/:id', waterController_1.deleteReportHandler);
+exports.default = router;

@@ -1,0 +1,77 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-size: 19px;
+  }
+  html, body {
+    font-family: 'Open Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: #ecf0f5;
+    color: #37474f;
+  }
+}
+
+/* Flat Able card signature: crisp flat white box with teal top border */
+.fa-card {
+  background: #ffffff;
+  border-radius: 4px;
+  border-top: 3px solid #1abc9c;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.07);
+}
+
+.fa-card-plain {
+  background: #ffffff;
+  border-radius: 4px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.07);
+}
+
+.leaflet-container {
+  background: #e5eaef;
+  font-family: 'Open Sans', sans-serif;
+}
+
+.leaflet-container .leaflet-interactive:focus {
+  outline: none;
+}
+
+/* Wydruk A4 / Zapis raportu do PDF */
+@media print {
+  @page {
+    size: A4;
+    margin: 10mm;
+  }
+  html {
+    font-size: 13px !important;
+  }
+  html, body {
+    background: #ffffff !important;
+    color: #222 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  aside,
+  header.fa-topbar,
+  .no-print {
+    display: none !important;
+  }
+  .print-full {
+    padding: 0 !important;
+    margin: 0 !important;
+    max-width: none !important;
+  }
+  .lg\:pl-\[300px\] {
+    padding-left: 0 !important;
+  }
+  .pt-\[76px\] {
+    padding-top: 0 !important;
+  }
+  .break-inside-avoid {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  .leaflet-control-container {
+    display: none !important;
+  }
+}
