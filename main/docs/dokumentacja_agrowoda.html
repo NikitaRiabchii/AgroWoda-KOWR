@@ -1,0 +1,1421 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <title>AgroWoda KOWR — Dokumentacja techniczna i operacyjna</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+    :root {
+      --navy: #0f1722;
+      --slate-dark: #1e293b;
+      --accent: #16a085;
+      --accent-bright: #1abc9c;
+      --accent-soft: #e8f8f5;
+      --text: #1f2937;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --code-bg: #f3f6f9;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    @page {
+      size: A4 portrait;
+      margin: 22mm 17mm 20mm 17mm;
+      @top-left {
+        content: "AGROWODA KOWR";
+        font-family: 'Inter', sans-serif;
+        font-size: 8pt;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        color: #16a085;
+        border-bottom: 0.6pt solid #cbd5e1;
+        padding-bottom: 4pt;
+        margin-bottom: 8pt;
+      }
+      @top-right {
+        content: "Dokumentacja techniczna i operacyjna";
+        font-family: 'Inter', sans-serif;
+        font-size: 8pt;
+        color: #64748b;
+        border-bottom: 0.6pt solid #cbd5e1;
+        padding-bottom: 4pt;
+        margin-bottom: 8pt;
+      }
+      @bottom-left {
+        content: "Inteligentny Asystent Gospodarowania Wodą w Rolnictwie";
+        font-family: 'Inter', sans-serif;
+        font-size: 8pt;
+        color: #64748b;
+        border-top: 0.6pt solid #e2e8f0;
+        padding-top: 4pt;
+      }
+      @bottom-right {
+        content: counter(page);
+        font-family: 'Inter', sans-serif;
+        font-size: 8.5pt;
+        font-weight: 600;
+        color: #475569;
+        border-top: 0.6pt solid #e2e8f0;
+        padding-top: 4pt;
+      }
+    }
+
+    @page :first {
+      margin: 0;
+      @top-left { content: none; border: none; }
+      @top-right { content: none; border: none; }
+      @bottom-left { content: none; border: none; }
+      @bottom-right { content: none; border: none; }
+    }
+
+    body {
+      font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+      font-size: 9.8pt;
+      line-height: 1.56;
+      color: var(--text);
+      background: #ffffff;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    /* ================= COVER PAGE ================= */
+    .cover {
+      position: relative;
+      width: 210mm;
+      height: 297mm;
+      background: var(--navy);
+      color: #ffffff;
+      overflow: hidden;
+      page-break-after: always;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+
+    .cover-photo {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 62%;
+      object-fit: cover;
+      object-position: center 40%;
+    }
+
+    .cover-fade {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 66%;
+      background: linear-gradient(
+        to bottom,
+        rgba(15, 23, 34, 0.12) 0%,
+        rgba(15, 23, 34, 0.25) 45%,
+        rgba(15, 23, 34, 0.88) 82%,
+        #0f1722 100%
+      );
+    }
+
+    .cover-hud {
+      position: absolute;
+      top: 18mm;
+      right: 16mm;
+      background: rgba(15, 23, 34, 0.84);
+      border: 1px solid rgba(26, 188, 156, 0.65);
+      border-radius: 6px;
+      padding: 8px 14px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 7.5pt;
+      color: #f8fafc;
+      backdrop-filter: blur(6px);
+    }
+    .cover-hud strong { color: #ffffff; }
+    .cover-hud-dot {
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #1abc9c;
+      margin-right: 6px;
+      vertical-align: middle;
+    }
+    .cover-hud-sub {
+      color: #cbd5e1;
+      font-size: 6.8pt;
+      margin-top: 2px;
+    }
+
+    .cover-reticle {
+      position: absolute;
+      top: 38mm;
+      left: 58mm;
+      width: 78mm;
+      height: 44mm;
+      pointer-events: none;
+    }
+    .cover-reticle span {
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      border-color: rgba(255, 255, 255, 0.72);
+      border-style: solid;
+    }
+    .cover-reticle .tl { top: 0; left: 0; border-width: 2px 0 0 2px; }
+    .cover-reticle .tr { top: 0; right: 0; border-width: 2px 2px 0 0; }
+    .cover-reticle .bl { bottom: 0; left: 0; border-width: 0 0 2px 2px; }
+    .cover-reticle .br { bottom: 0; right: 0; border-width: 0 2px 2px 0; }
+
+    .cover-body {
+      position: relative;
+      z-index: 5;
+      padding: 0 18mm 18mm 18mm;
+    }
+
+    .cover-kicker {
+      font-size: 8.5pt;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #1abc9c;
+      margin-bottom: 8px;
+    }
+
+    .cover-title {
+      font-size: 46pt;
+      font-weight: 900;
+      letter-spacing: 0.06em;
+      line-height: 1.02;
+      color: #ffffff;
+      margin-bottom: 12px;
+    }
+    .cover-title .accent { color: #1abc9c; }
+
+    .cover-sub {
+      font-size: 16pt;
+      font-weight: 700;
+      color: #f8fafc;
+      margin-bottom: 6px;
+    }
+
+    .cover-desc {
+      font-size: 11.5pt;
+      color: #94a3b8;
+      font-weight: 400;
+      margin-bottom: 5px;
+    }
+
+    .cover-tagline {
+      font-size: 10pt;
+      color: #64748b;
+      margin-bottom: 24px;
+    }
+
+    .cover-meta {
+      display: grid;
+      grid-template-columns: 1fr 1.3fr 1.1fr;
+      gap: 16px;
+      border-top: 1px solid rgba(148, 163, 184, 0.25);
+      padding-top: 14px;
+      margin-bottom: 14px;
+    }
+    .cover-meta-col {
+      border-left: 2px solid rgba(26, 188, 156, 0.45);
+      padding-left: 10px;
+    }
+    .cover-meta-col:first-child { border-left: none; padding-left: 0; }
+    .cover-meta-label {
+      font-size: 7pt;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #1abc9c;
+      margin-bottom: 3px;
+    }
+    .cover-meta-val {
+      font-size: 9.5pt;
+      font-weight: 600;
+      color: #f1f5f9;
+    }
+
+    .cover-version {
+      font-size: 8pt;
+      color: #64748b;
+    }
+
+    /* ================= CONTENT TYPOGRAPHY ================= */
+    .page-break { page-break-before: always; }
+    .avoid-break { break-inside: avoid; page-break-inside: avoid; }
+
+    h1 {
+      font-size: 20pt;
+      font-weight: 800;
+      color: var(--navy);
+      margin-top: 4px;
+      margin-bottom: 12px;
+      letter-spacing: -0.02em;
+      page-break-after: avoid;
+    }
+    h1 .num { color: var(--accent); margin-right: 6px; }
+
+    h2 {
+      font-size: 12.2pt;
+      font-weight: 700;
+      color: var(--accent);
+      margin-top: 16px;
+      margin-bottom: 6px;
+      page-break-after: avoid;
+    }
+
+    h3 {
+      font-size: 10.4pt;
+      font-weight: 700;
+      color: var(--slate-dark);
+      margin-top: 12px;
+      margin-bottom: 4px;
+      page-break-after: avoid;
+    }
+
+    p { margin-bottom: 8px; text-align: justify; }
+
+    ul, ol {
+      margin: 4px 0 10px 18px;
+    }
+    li { margin-bottom: 4px; }
+
+    strong { color: #0f172a; }
+
+    /* Table of Contents */
+    .toc-title {
+      font-size: 20pt;
+      font-weight: 800;
+      color: var(--navy);
+      margin-bottom: 12px;
+    }
+    .toc-list { list-style: none; margin: 0; padding: 0; }
+    .toc-item {
+      display: flex;
+      align-items: baseline;
+      margin-bottom: 3px;
+      font-size: 8.8pt;
+      line-height: 1.38;
+    }
+    .toc-item.lvl1 {
+      font-weight: 700;
+      color: var(--navy);
+      margin-top: 8px;
+      font-size: 9.4pt;
+    }
+    .toc-item.lvl2 {
+      padding-left: 14px;
+      color: #334155;
+      font-weight: 400;
+    }
+    .toc-dots {
+      flex: 1;
+      border-bottom: 1px dotted #cbd5e1;
+      margin: 0 7px;
+    }
+    .toc-pg {
+      font-weight: 600;
+      color: #475569;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Formula / Code Blocks */
+    .formula-box {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-left: 3.5px solid var(--accent-bright);
+      border-radius: 4px;
+      padding: 9px 12px;
+      margin: 9px 0 11px 0;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 7.7pt;
+      line-height: 1.58;
+      color: #0f172a;
+      white-space: pre-wrap;
+      break-inside: avoid;
+    }
+
+    /* Info Callout */
+    .callout {
+      background: var(--accent-soft);
+      border-left: 3.5px solid var(--accent);
+      border-radius: 4px;
+      padding: 10px 14px;
+      margin: 10px 0 12px 0;
+      font-size: 9.2pt;
+      color: #134e4a;
+      break-inside: avoid;
+    }
+
+    /* Tables (dark slate header + alternating soft stripes) */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 10px 0 14px 0;
+      font-size: 8.5pt;
+      break-inside: auto;
+    }
+    thead { display: table-header-group; }
+    tr { break-inside: avoid; page-break-inside: avoid; }
+    th {
+      background: #1e293b;
+      color: #ffffff;
+      font-weight: 700;
+      text-align: left;
+      padding: 7px 9px;
+      font-size: 8.2pt;
+    }
+    td {
+      padding: 6.5px 9px;
+      border-bottom: 1px solid #e2e8f0;
+      vertical-align: top;
+      color: #334155;
+    }
+    tbody tr:nth-child(even) { background: #f8fafc; }
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8pt;
+      background: #f1f5f9;
+      padding: 1px 4px;
+      border-radius: 3px;
+      color: #0f172a;
+    }
+
+    /* Dark Diagram Containers */
+    .diagram-card {
+      background: #0f1722;
+      border-radius: 8px;
+      padding: 16px;
+      margin: 12px 0 6px 0;
+      color: #f8fafc;
+      break-inside: avoid;
+    }
+
+    /* Screenshot Figures */
+    .figure {
+      margin: 12px 0 14px 0;
+      break-inside: avoid;
+    }
+    .figure-frame {
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      overflow: hidden;
+      background: #ffffff;
+      box-shadow: 0 2px 8px rgba(15, 23, 34, 0.08);
+    }
+    .figure-frame img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+    .caption {
+      font-size: 8.2pt;
+      font-style: italic;
+      color: #64748b;
+      text-align: center;
+      margin-top: 5px;
+      margin-bottom: 8px;
+    }
+
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin: 10px 0 14px 0;
+      break-inside: avoid;
+    }
+    .kpi-box {
+      border: 1px solid var(--border);
+      border-top: 2.5px solid var(--accent-bright);
+      border-radius: 4px;
+      padding: 8px 10px;
+      background: #ffffff;
+    }
+    .kpi-label { font-size: 7.2pt; font-weight: 700; text-transform: uppercase; color: var(--muted); }
+    .kpi-val { font-size: 13pt; font-weight: 800; color: var(--navy); margin-top: 2px; }
+    .kpi-sub { font-size: 7.5pt; color: var(--muted); margin-top: 1px; }
+  </style>
+</head>
+<body>
+
+<!-- ========================================================================= -->
+<!-- STRONA 1: OKŁADKA                                                         -->
+<!-- ========================================================================= -->
+<div class="cover">
+  <img src="cover_agrowoda.jpg" alt="Krajobraz rolniczy z retencją wody" class="cover-photo" />
+  <div class="cover-fade"></div>
+
+  <div class="cover-hud">
+    <div><span class="cover-hud-dot"></span><strong>LIVE · SENTINEL-2 L2A · NMT 1 m</strong></div>
+    <div class="cover-hud-sub">FAO-56 Penman-Monteith · IUNG KBW 10 lat · ISRIC SoilGrids</div>
+  </div>
+
+  <div class="cover-reticle">
+    <span class="tl"></span><span class="tr"></span>
+    <span class="bl"></span><span class="br"></span>
+  </div>
+
+  <div class="cover-body">
+    <div class="cover-kicker">HACKNATION 2026 · ZADANIE KONKURSOWE KOWR</div>
+    <div class="cover-title">AGRO<span class="accent">W</span>OD<span class="accent">A</span></div>
+    <div class="cover-sub">Inteligentny Asystent Gospodarowania Wodą w Rolnictwie</div>
+    <div class="cover-desc">Dokumentacja techniczna i operacyjna</div>
+    <div class="cover-tagline">Zatrzymaj wodę, chroń plony — od otwartych danych satelitarnych i 10-letniej meteorologii do konkretnej decyzji na działce rolnej</div>
+
+    <div class="cover-meta">
+      <div class="cover-meta-col">
+        <div class="cover-meta-label">Zespół</div>
+        <div class="cover-meta-val">Niekompetentni Profi</div>
+      </div>
+      <div class="cover-meta-col">
+        <div class="cover-meta-label">Partner zadania</div>
+        <div class="cover-meta-val">Krajowy Ośrodek Wsparcia Rolnictwa (KOWR)</div>
+      </div>
+      <div class="cover-meta-col">
+        <div class="cover-meta-label">Zakres danych</div>
+        <div class="cover-meta-val">Cała Polska · Archiwum 10 lat · 5 źródeł live</div>
+      </div>
+    </div>
+    <div class="cover-version">Wersja 1.0 · listopad 2026 · Bydgoszcz</div>
+  </div>
+</div>
+
+<!-- ========================================================================= -->
+<!-- STRONA 2: SPIS TREŚCI                                                     -->
+<!-- ========================================================================= -->
+<div class="toc-title">Spis treści</div>
+<ul class="toc-list">
+  <li class="toc-item lvl1"><span>1. Wprowadzenie</span><span class="toc-dots"></span><span class="toc-pg">3</span></li>
+  <li class="toc-item lvl2"><span>1.1 Cel dokumentu</span><span class="toc-dots"></span><span class="toc-pg">3</span></li>
+  <li class="toc-item lvl2"><span>1.2 Problem operacyjny i susza rolnicza w Polsce</span><span class="toc-dots"></span><span class="toc-pg">3</span></li>
+  <li class="toc-item lvl2"><span>1.3 Użytkownicy systemu i zasada braku barier</span><span class="toc-dots"></span><span class="toc-pg">3</span></li>
+
+  <li class="toc-item lvl1"><span>2. Koncepcja rozwiązania</span><span class="toc-dots"></span><span class="toc-pg">4</span></li>
+  <li class="toc-item lvl2"><span>2.1 Dane wskazują przyczynę, retencja jest priorytetem, rolnik decyduje</span><span class="toc-dots"></span><span class="toc-pg">4</span></li>
+  <li class="toc-item lvl2"><span>2.2 Logiczna sekwencja analizy KOWR (Etapy 1 → 5)</span><span class="toc-dots"></span><span class="toc-pg">4</span></li>
+  <li class="toc-item lvl2"><span>2.3 Zasada „Retain Water Where It Falls” (NWRM UE)</span><span class="toc-dots"></span><span class="toc-pg">4</span></li>
+
+  <li class="toc-item lvl1"><span>3. Architektura systemu</span><span class="toc-dots"></span><span class="toc-pg">5</span></li>
+  <li class="toc-item lvl2"><span>3.1 Warstwy systemu i integracja 5 kategorii otwartych danych</span><span class="toc-dots"></span><span class="toc-pg">5</span></li>
+  <li class="toc-item lvl2"><span>3.2 Architektura oprogramowania i moduły obliczeniowe</span><span class="toc-dots"></span><span class="toc-pg">5</span></li>
+  <li class="toc-item lvl2"><span>3.3 Model danych, pamięć podręczna SQLite i zapisane raporty</span><span class="toc-dots"></span><span class="toc-pg">6</span></li>
+
+  <li class="toc-item lvl1"><span>4. Przebieg analizy i metodyka naukowa krok po kroku</span><span class="toc-dots"></span><span class="toc-pg">7</span></li>
+  <li class="toc-item lvl2"><span>4.1 Krok 1: Identyfikacja działki ewidencyjnej (ULDK / KIEG) i katalog 12 upraw</span><span class="toc-dots"></span><span class="toc-pg">7</span></li>
+  <li class="toc-item lvl2"><span>4.2 Krok 2: 10-letni bilans wodny FAO-56 Penman-Monteith i KBW IUNG-PIB</span><span class="toc-dots"></span><span class="toc-pg">8</span></li>
+  <li class="toc-item lvl2"><span>4.3 Krok 3: Teledetekcja satelitarna Sentinel-2 L2A (NDVI, NDMI, maska SCL)</span><span class="toc-dots"></span><span class="toc-pg">9</span></li>
+  <li class="toc-item lvl2"><span>4.4 Krok 4: Gleba (SoilGrids, Saxton &amp; Rawls 2006), rzeźba terenu (NMT 1 m) i hydrologia</span><span class="toc-dots"></span><span class="toc-pg">9</span></li>
+  <li class="toc-item lvl2"><span>4.5 Krok 5: Zintegrowana ocena stanu wilgotności i identyfikacja przyczyn (Etapy 1–2)</span><span class="toc-dots"></span><span class="toc-pg">10</span></li>
+  <li class="toc-item lvl2"><span>4.6 Krok 6: Generowanie rekomendacji retencyjnych, agrotechnicznych i nawadniania (Etapy 3–5)</span><span class="toc-dots"></span><span class="toc-pg">11</span></li>
+  <li class="toc-item lvl2"><span>4.7 Krok 7: Transparentność niepewności, eksport raportu (PDF/Excel) i porównywarka działek</span><span class="toc-dots"></span><span class="toc-pg">13</span></li>
+
+  <li class="toc-item lvl1"><span>5. Źródła danych, stos technologiczny i licencje</span><span class="toc-dots"></span><span class="toc-pg">14</span></li>
+  <li class="toc-item lvl2"><span>5.1 Wykaz źródeł danych: pobór na bieżąco vs buforowanie (TTL cache)</span><span class="toc-dots"></span><span class="toc-pg">14</span></li>
+  <li class="toc-item lvl2"><span>5.2 Stos programowy, biblioteki otwarte oraz zakres użycia narzędzi AI</span><span class="toc-dots"></span><span class="toc-pg">14</span></li>
+
+  <li class="toc-item lvl1"><span>6. Weryfikacja, testy i wyniki na rzeczywistych działkach</span><span class="toc-dots"></span><span class="toc-pg">16</span></li>
+  <li class="toc-item lvl2"><span>6.1 Działanie na żywo, odporność na limity i zabezpieczenia API</span><span class="toc-dots"></span><span class="toc-pg">16</span></li>
+  <li class="toc-item lvl2"><span>6.2 Walidacja dla rzeczywistych działek i dat historycznych</span><span class="toc-dots"></span><span class="toc-pg">16</span></li>
+  <li class="toc-item lvl2"><span>6.3 Testy automatyczne (Jest + Supertest)</span><span class="toc-dots"></span><span class="toc-pg">17</span></li>
+
+  <li class="toc-item lvl1"><span>7. Bezpieczeństwo, prywatność, prawo i ograniczenia</span><span class="toc-dots"></span><span class="toc-pg">18</span></li>
+  <li class="toc-item lvl2"><span>7.1 Cyberbezpieczeństwo i minimalizacja danych (RODO)</span><span class="toc-dots"></span><span class="toc-pg">18</span></li>
+  <li class="toc-item lvl2"><span>7.2 Ramy prawne (Prawo wodne) i ograniczenia modelu</span><span class="toc-dots"></span><span class="toc-pg">18</span></li>
+
+  <li class="toc-item lvl1"><span>8. Uruchomienie prototypu i skalowalność w skali kraju</span><span class="toc-dots"></span><span class="toc-pg">19</span></li>
+  <li class="toc-item lvl2"><span>8.1 Instrukcja uruchomienia (Windows / macOS / Linux)</span><span class="toc-dots"></span><span class="toc-pg">19</span></li>
+  <li class="toc-item lvl2"><span>8.2 Plan skalowania krajowego i szacunkowe koszty infrastruktury</span><span class="toc-dots"></span><span class="toc-pg">19</span></li>
+
+  <li class="toc-item lvl1"><span>Załączniki</span><span class="toc-dots"></span><span class="toc-pg">20</span></li>
+  <li class="toc-item lvl2"><span>Załącznik A: Najważniejsze punkty końcowe REST API</span><span class="toc-dots"></span><span class="toc-pg">20</span></li>
+  <li class="toc-item lvl2"><span>Załącznik B: Kluczowe parametry i progi obliczeniowe systemu</span><span class="toc-dots"></span><span class="toc-pg">20</span></li>
+  <li class="toc-item lvl2"><span>Załącznik C: Bibliografia naukowa</span><span class="toc-dots"></span><span class="toc-pg">21</span></li>
+</ul>
+
+<!-- ========================================================================= -->
+<!-- ROZDZIAŁ 1: WPROWADZENIE                                                  -->
+<!-- ========================================================================= -->
+<h1 class="page-break"><span class="num">1.</span>Wprowadzenie</h1>
+
+<h2>1.1 Cel dokumentu</h2>
+<p>
+  Dokument opisuje system <strong>AgroWoda KOWR</strong> — cyfrowego asystenta gospodarowania wodą w rolnictwie,
+  opracowanego w ramach wyzwania konkursowego Krajowego Ośrodka Wsparcia Rolnictwa na hackathonie
+  <strong>HackNation 2026</strong>. Wyjaśnia, w jaki sposób system pobiera otwarte dane przestrzenne, satelitarne,
+  meteorologiczne (z 10 lat), glebowe i hydrologiczne, jakie obliczenia naukowe wykonuje oraz jak przekształca je w
+  proste, uzasadnione liczbami rekomendacje dotyczące retencji wody, agrotechniki i racjonalnego nawadniania dla
+  dowolnej działki ewidencyjnej w Polsce.
+</p>
+<p>
+  Wszystkie wzory, wagi, progi suszowe oraz parametry przedstawione w niniejszym dokumencie pochodzą bezpośrednio z
+  kodu źródłowego działającego prototypu, a załączone zrzuty ekranu prezentują rzeczywiste działanie aplikacji na
+  danych pobranych na żywo z publicznych usług API. Dokument spełnia pełny zakres wymogów formalnych i technicznych
+  określonych w opisie zadania konkursowego KOWR (rozdziały 3–7).
+</p>
+
+<h2>1.2 Problem operacyjny i susza rolnicza w Polsce</h2>
+<p>
+  Polska należy do krajów europejskich o jednych z najniższych zasobów wód powierzchniowych na mieszkańca oraz niskim
+  poziomie retencji krajobrazowej i glebowej. Zmiany klimatu potęgują zmienność warunków hydrometeorologicznych:
+  długotrwałe okresy bezopadowe i fale upałów przeplatają się z intensywnymi opadami nawalnymi (&ge; 20 mm/dobę),
+  które zamiast wsiąkać w profil glebowy, spływają powierzchniowo poza pole i zasilają szybki odpływ rowami
+  melioracyjnymi.
+</p>
+<p>
+  Choć publiczne instytucje (GUGiK, IMGW-PIB, IUNG-PIB, ESA/Copernicus, NASA, ISRIC) udostępniają bezpłatnie ogromne
+  zasoby danych środowiskowych, są one rozproszone w niekompatybilnych serwisach (WFS/WMS, STAC GeoTIFF, reanalizy
+  klimatyczne, bazy glebowe) i wymagają zaawansowanej wiedzy GIS oraz hydrologicznej. Przeciętny rolnik nie dysponuje
+  narzędziem, które po wpisaniu numeru działki albo kliknięciu pola na mapie odpowie w kilkanaście sekund na trzy
+  praktyczne pytania: <em>jaki jest stan wody na mojej działce dziś i na przestrzeni ostatnich 10 lat?</em>,
+  <em>dlaczego wody brakuje?</em> oraz <em>jakie konkretne zabiegi retencyjne i agrotechniczne przyniosą największy efekt w tej lokalizacji?</em>
+</p>
+
+<h2>1.3 Użytkownicy systemu i zasada braku barier</h2>
+<p>
+  Głównym użytkownikiem systemu jest rolnik prowadzący gospodarstwo obejmujące jedną lub wiele działek ewidencyjnych,
+  który nie musi znać systemów GIS, teledetekcji ani hydrologii. Drugą grupą są doradcy rolniczy (ODR) oraz instytucje
+  wspierające retencję (KOWR). W ścisłej zgodności z wymogami §5.4 i §5.6 zadania konkursowego system realizuje zasadę
+  <strong>zerowej bariery wejścia</strong>:
+</p>
+<ul>
+  <li><strong>Brak rejestracji, logowania i danych osobowych</strong> — narzędzie działa natychmiast po otwarciu w przeglądarce internetowej (Chrome, Edge, Firefox, Safari, Opera) w systemie Windows i na urządzeniach mobilnych.</li>
+  <li><strong>Brak opłat i specjalistycznego oprogramowania</strong> — wszystkie źródła danych i komponenty mają licencje otwarte i bezpłatne.</li>
+  <li><strong>Prostota interfejsu (3 kroki)</strong> — wskazanie działki (TERYT / wyszukiwarka miejscowości / kliknięcie na mapie) &rarr; wybór uprawy i daty (ostatnie 10 lat) &rarr; kliknięcie przycisku <em>Analizuj</em>.</li>
+</ul>
+
+<!-- ========================================================================= -->
+<!-- ROZDZIAŁ 2: KONCEPCJA ROZWIĄZANIA                                         -->
+<!-- ========================================================================= -->
+<h1 class="page-break"><span class="num">2.</span>Koncepcja rozwiązania</h1>
+
+<h2>2.1 Dane wskazują przyczynę, retencja jest priorytetem, rolnik decyduje</h2>
+<p>
+  AgroWoda KOWR nie ogranicza się do pokazania samej mapy suszy ani nie wyświetla gotowych, jednakowych porad.
+  Każda analiza rozpoczyna się od wieloźródłowego rozpoznania lokalnego bilansu wodnego, gleby, rzeźby terenu,
+  kondycji roślinności oraz otoczenia hydrograficznego. Dopiero na tej podstawie deterministyczny, w pełni wyjaśnialny
+  silnik hydro-agronomiczny wylicza przyczyny niedoboru i dobiera rekomendacje opatrzone konkretnym uzasadnieniem
+  liczbowym z danych (np. dokładnym spadkiem stoku z NMT 1 m, odległością do najbliższego rowu melioracyjnego czy
+  zawartością próchnicy i retencją AWC z SoilGrids).
+</p>
+<p>
+  Kluczowym założeniem projektowym jest transparentność i brak pozornej precyzji: jeżeli dowolne źródło (np.
+  zobrazowanie Sentinel-2 z powodu długotrwałego zachmurzenia albo serwer Overpass OSM) nie dostarczy danych dla
+  wybranej działki i daty, system komunikuje ten fakt wprost w sekcji ograniczeń raportu oraz obniża wskaźnik pewności
+  analizy.
+</p>
+
+<h2>2.2 Logiczna sekwencja analizy KOWR (Etapy 1 &rarr; 5)</h2>
+<p>
+  Zgodnie z wytycznymi naukowymi wyzwania KOWR (załącznik <em>Podstawy naukowe</em>) aplikacja wymusza ścisłą,
+  przyczynowo-skutkową kolejność wnioskowania. Rekomendacje retencyjne i nawodnieniowe nie mogą powstać bez
+  uprzedniej diagnozy bieżącego oraz 10-letniego bilansu wodnego i identyfikacji źródeł problemu.
+</p>
+
+<div class="diagram-card">
+  <svg viewBox="0 0 740 128" width="100%" height="auto" xmlns="http://www.w3.org/2000/svg">
+    <!-- Connecting arrows -->
+    <g stroke="#334155" stroke-width="1.6" fill="none">
+      <line x1="86" y1="42" x2="108" y2="42"/><polygon points="108,38 115,42 108,46" fill="#1abc9c" stroke="none"/>
+      <line x1="186" y1="42" x2="208" y2="42"/><polygon points="208,38 215,42 208,46" fill="#1abc9c" stroke="none"/>
+      <line x1="286" y1="42" x2="308" y2="42"/><polygon points="308,38 315,42 308,46" fill="#1abc9c" stroke="none"/>
+      <line x1="386" y1="42" x2="408" y2="42"/><polygon points="408,38 415,42 408,46" fill="#1abc9c" stroke="none"/>
+      <line x1="486" y1="42" x2="508" y2="42"/><polygon points="508,38 515,42 508,46" fill="#1abc9c" stroke="none"/>
+      <line x1="586" y1="42" x2="608" y2="42"/><polygon points="608,38 615,42 608,46" fill="#1abc9c" stroke="none"/>
+    </g>
+    <!-- Nodes 01..07 -->
+    <g font-family="Inter, sans-serif" text-anchor="middle">
+      <circle cx="52" cy="42" r="24" fill="#162231" stroke="#334155" stroke-width="1.5"/>
+      <text x="52" y="47" fill="#1abc9c" font-size="13" font-weight="800">01</text>
+      <text x="52" y="84" fill="#f8fafc" font-size="8.8" font-weight="700">Działka i uprawa</text>
+      <text x="52" y="98" fill="#94a3b8" font-size="7.2">TERYT / mapa</text>
+      <text x="52" y="109" fill="#94a3b8" font-size="7.2">data (10 lat)</text>
+
+      <circle cx="152" cy="42" r="24" fill="#162231" stroke="#334155" stroke-width="1.5"/>
+      <text x="152" y="47" fill="#1abc9c" font-size="13" font-weight="800">02</text>
+      <text x="152" y="84" fill="#f8fafc" font-size="8.8" font-weight="700">5 źródeł live</text>
+      <text x="152" y="98" fill="#94a3b8" font-size="7.2">ULDK · NMT · NASA</text>
+      <text x="152" y="109" fill="#94a3b8" font-size="7.2">S2 · Soil · IMGW</text>
+
+      <circle cx="252" cy="42" r="24" fill="#162231" stroke="#334155" stroke-width="1.5"/>
+      <text x="252" y="47" fill="#1abc9c" font-size="13" font-weight="800">03</text>
+      <text x="252" y="84" fill="#f8fafc" font-size="8.8" font-weight="700">Etap 1: Ocena</text>
+      <text x="252" y="98" fill="#94a3b8" font-size="7.2">KBW₆₀ · FAO-56</text>
+      <text x="252" y="109" fill="#94a3b8" font-size="7.2">NDVI/NDMI · 10 lat</text>
+
+      <circle cx="352" cy="42" r="24" fill="#162231" stroke="#334155" stroke-width="1.5"/>
+      <text x="352" y="47" fill="#1abc9c" font-size="13" font-weight="800">04</text>
+      <text x="352" y="84" fill="#f8fafc" font-size="8.8" font-weight="700">Etap 2: Przyczyny</text>
+      <text x="352" y="98" fill="#94a3b8" font-size="7.2">Klimat · gleba</text>
+      <text x="352" y="109" fill="#94a3b8" font-size="7.2">spływ · uprawa</text>
+
+      <circle cx="452" cy="42" r="24" fill="#162231" stroke="#1abc9c" stroke-width="1.8"/>
+      <text x="452" y="47" fill="#1abc9c" font-size="13" font-weight="800">05</text>
+      <text x="452" y="84" fill="#1abc9c" font-size="8.8" font-weight="700">Etap 3: Retencja</text>
+      <text x="452" y="98" fill="#cbd5e1" font-size="7.2">PRIORYTET NWRM</text>
+      <text x="452" y="109" fill="#cbd5e1" font-size="7.2">krajobraz + gleba</text>
+
+      <circle cx="552" cy="42" r="24" fill="#162231" stroke="#334155" stroke-width="1.5"/>
+      <text x="552" y="47" fill="#1abc9c" font-size="13" font-weight="800">06</text>
+      <text x="552" y="84" fill="#f8fafc" font-size="8.8" font-weight="700">Etap 4–5: Akcje</text>
+      <text x="552" y="98" fill="#94a3b8" font-size="7.2">Agrotechnika</text>
+      <text x="552" y="109" fill="#94a3b8" font-size="7.2">nawadnianie (opcja)</text>
+
+      <circle cx="652" cy="42" r="24" fill="#16a085" stroke="#1abc9c" stroke-width="1.8"/>
+      <text x="652" y="47" fill="#ffffff" font-size="13" font-weight="800">07</text>
+      <text x="652" y="84" fill="#ffffff" font-size="8.8" font-weight="700">Raport i decyzja</text>
+      <text x="652" y="98" fill="#cbd5e1" font-size="7.2">PDF · Excel · SQLite</text>
+      <text x="652" y="109" fill="#cbd5e1" font-size="7.2">niepewność i źródła</text>
+    </g>
+  </svg>
+</div>
+<div class="caption">Rys. 1. Łańcuch przepływu informacji i ścisła sekwencja decyzyjna w systemie AgroWoda KOWR.</div>
+
+<h2>2.3 Zasada „Retain Water Where It Falls” (NWRM UE)</h2>
+<p>
+  Zgodnie z unijnymi wytycznymi <em>Natural Water Retention Measures (NWRM)</em> oraz literaturą FAO (2019),
+  nawadnianie nie powinno być pierwszym ani jedynym narzędziem walki z suszą — szczególnie w kraju o ograniczonych
+  zasobach wodnych. Dlatego AgroWoda zawsze w pierwszej kolejności generuje dopasowane do działki zalecenia
+  <strong>retencji krajobrazowej</strong> (zastawki na wykrytych rowach melioracyjnych, niecki infiltracyjne w
+  najniższym punkcie NMT, pasy wiatrochronne i strefy buforowe) oraz <strong>retencji glebowej</strong> (zwiększanie
+  zawartości próchnicy zgodnie z inicjatywą <em>Soil Carbon 4 per mille</em>, międzyplony, mulczowanie resztek
+  pożniwnych). Dopiero w Etapie 5, jeśli bieżący bilans i prognoza 7-dniowa potwierdzają potrzebę interwencji w
+  okresie wegetacji, system wylicza bezpieczną dawkę polewową FAO-56.
+</p>
+
+<!-- ========================================================================= -->
+<!-- ROZDZIAŁ 3: ARCHITEKTURA SYSTEMU                                          -->
+<!-- ========================================================================= -->
+<h1 class="page-break"><span class="num">3.</span>Architektura systemu</h1>
+
+<h2>3.1 Warstwy systemu i integracja 5 kategorii otwartych danych</h2>
+<p>
+  System składa się z lekkiej aplikacji webowej w przeglądarce rolnika oraz serwera obliczeniowego Node.js/TypeScript,
+  który w jednym równoległym przebiegu (<code>Promise.all</code>) pobiera, ujednolica i buforuje dane ze wszystkich
+  pięciu wymaganych kategorii źródeł publicznych. Dzięki przetwarzaniu równoległemu i strumieniowemu odczytowi
+  wyłącznie pikseli działki z chmury (Sentinel-2 COG), typowy czas wygenerowania pełnego raportu wynosi
+  <strong>8–15 sekund</strong> — wyraźnie poniżej preferowanego przez Jury progu 30 sekund.
+</p>
+
+<div class="diagram-card">
+  <svg viewBox="0 0 740 285" width="100%" height="auto" xmlns="http://www.w3.org/2000/svg">
+    <text x="14" y="18" fill="#1abc9c" font-family="Inter, sans-serif" font-size="8.5" font-weight="800" letter-spacing="1.2">WARSTWY APLIKACJI AGROWODA KOWR</text>
+
+    <!-- Top 4 boxes -->
+    <g font-family="Inter, sans-serif">
+      <!-- Box 1 -->
+      <rect x="14" y="30" width="162" height="118" rx="6" fill="#162231" stroke="#334155"/>
+      <text x="26" y="50" fill="#ffffff" font-size="10" font-weight="700">Interfejs Rolnika</text>
+      <text x="26" y="68" fill="#cbd5e1" font-size="8">React 18 + TypeScript</text>
+      <text x="26" y="82" fill="#cbd5e1" font-size="8">Mapa Leaflet + GUGiK KIEG</text>
+      <text x="26" y="96" fill="#cbd5e1" font-size="8">Dashboard Flat Able (KPI)</text>
+      <text x="26" y="110" fill="#cbd5e1" font-size="8">Wykresy SVG 10 lat &amp; 60 dni</text>
+      <text x="26" y="124" fill="#cbd5e1" font-size="8">Wydruk A4 PDF + porównanie</text>
+
+      <!-- Arrow 1->2 -->
+      <line x1="176" y1="88" x2="196" y2="88" stroke="#1abc9c" stroke-width="1.6"/>
+      <polygon points="196,84 203,88 196,92" fill="#1abc9c"/>
+
+      <!-- Box 2 (Highlighted core server) -->
+      <rect x="204" y="30" width="174" height="118" rx="6" fill="#16a085" stroke="#1abc9c" stroke-width="1.5"/>
+      <text x="216" y="50" fill="#ffffff" font-size="10" font-weight="800">Serwer API &amp; Silnik KOWR</text>
+      <text x="216" y="68" fill="#ecfdf5" font-size="8">Express + TypeScript (REST)</text>
+      <text x="216" y="82" fill="#ecfdf5" font-size="8">Orkiestracja 5 źródeł równolegle</text>
+      <text x="216" y="96" fill="#ecfdf5" font-size="8">FAO-56 · Saxton &amp; Rawls · IUNG</text>
+      <text x="216" y="110" fill="#ecfdf5" font-size="8">Silnik rekomendacji (Etapy 1–5)</text>
+      <text x="216" y="124" fill="#ecfdf5" font-size="8">Walidacja, bezpieczeństwo, limity</text>
+
+      <!-- Arrow 2->3 -->
+      <line x1="378" y1="88" x2="398" y2="88" stroke="#1abc9c" stroke-width="1.6"/>
+      <polygon points="398,84 405,88 398,92" fill="#1abc9c"/>
+
+      <!-- Box 3 -->
+      <rect x="406" y="30" width="150" height="118" rx="6" fill="#162231" stroke="#334155"/>
+      <text x="418" y="50" fill="#ffffff" font-size="10" font-weight="700">Pamięć i Cache</text>
+      <text x="418" y="68" fill="#cbd5e1" font-size="8">Wbudowany node:sqlite</text>
+      <text x="418" y="82" fill="#cbd5e1" font-size="8">Fallback atomic JSON</text>
+      <text x="418" y="96" fill="#cbd5e1" font-size="8">TTL cache (30 min – 30 dni)</text>
+      <text x="418" y="110" fill="#cbd5e1" font-size="8">Historia raportów działek</text>
+      <text x="418" y="124" fill="#cbd5e1" font-size="8">Zero kompilacji C++ (Win)</text>
+
+      <!-- Arrow 3->4 -->
+      <line x1="556" y1="88" x2="576" y2="88" stroke="#1abc9c" stroke-width="1.6"/>
+      <polygon points="576,84 583,88 576,92" fill="#1abc9c"/>
+
+      <!-- Box 4 -->
+      <rect x="584" y="30" width="142" height="118" rx="6" fill="#162231" stroke="#334155"/>
+      <text x="596" y="50" fill="#ffffff" font-size="10" font-weight="700">Produkty Raportu</text>
+      <text x="596" y="68" fill="#cbd5e1" font-size="8">Widok A4 do druku / PDF</text>
+      <text x="596" y="82" fill="#cbd5e1" font-size="8">ExcelJS (.xlsx, 5 arkuszy)</text>
+      <text x="596" y="96" fill="#cbd5e1" font-size="8">Porównywarka 4 działek</text>
+      <text x="596" y="110" fill="#cbd5e1" font-size="8">Dokumentacja Swagger UI</text>
+      <text x="596" y="124" fill="#cbd5e1" font-size="8">Jawna tabela niepewności</text>
+    </g>
+
+    <!-- Vertical connectors from Server to Data Sources -->
+    <g stroke="#475569" stroke-width="1.3">
+      <line x1="291" y1="148" x2="291" y2="176"/>
+      <line x1="80" y1="176" x2="656" y2="176"/>
+      <line x1="80" y1="176" x2="80" y2="194"/>
+      <line x1="224" y1="176" x2="224" y2="194"/>
+      <line x1="368" y1="176" x2="368" y2="194"/>
+      <line x1="512" y1="176" x2="512" y2="194"/>
+      <line x1="656" y1="176" x2="656" y2="194"/>
+    </g>
+
+    <text x="14" y="170" fill="#1abc9c" font-family="Inter, sans-serif" font-size="8" font-weight="800" letter-spacing="1.1">5 KATEGORII OTWARTYCH DANYCH PUBLICZNYCH (LIVE API)</text>
+
+    <!-- Bottom 5 Data Sources -->
+    <g font-family="Inter, sans-serif">
+      <rect x="14" y="196" width="132" height="74" rx="5" fill="#162231" stroke="#334155"/>
+      <text x="23" y="213" fill="#1abc9c" font-size="8.5" font-weight="700">1. Przestrzenne</text>
+      <text x="23" y="228" fill="#cbd5e1" font-size="7.5">GUGiK ULDK + KIEG</text>
+      <text x="23" y="241" fill="#cbd5e1" font-size="7.5">GUGiK NMT 1 m</text>
+      <text x="23" y="254" fill="#94a3b8" font-size="7">Open-Meteo DEM (fb)</text>
+
+      <rect x="158" y="196" width="132" height="74" rx="5" fill="#162231" stroke="#334155"/>
+      <text x="167" y="213" fill="#1abc9c" font-size="8.5" font-weight="700">2. Meteorologia</text>
+      <text x="167" y="228" fill="#cbd5e1" font-size="7.5">NASA POWER (10 lat)</text>
+      <text x="167" y="241" fill="#cbd5e1" font-size="7.5">Open-Meteo (prog. 7d)</text>
+      <text x="167" y="254" fill="#94a3b8" font-size="7">IMGW-PIB Synop</text>
+
+      <rect x="302" y="196" width="132" height="74" rx="5" fill="#162231" stroke="#334155"/>
+      <text x="311" y="213" fill="#1abc9c" font-size="8.5" font-weight="700">3. Satelitarne</text>
+      <text x="311" y="228" fill="#cbd5e1" font-size="7.5">Sentinel-2 L2A STAC</text>
+      <text x="311" y="241" fill="#cbd5e1" font-size="7.5">AWS Earth Search COG</text>
+      <text x="311" y="254" fill="#94a3b8" font-size="7">B04 · B08 · B11 · SCL</text>
+
+      <rect x="446" y="196" width="132" height="74" rx="5" fill="#162231" stroke="#334155"/>
+      <text x="455" y="213" fill="#1abc9c" font-size="8.5" font-weight="700">4. Glebowe</text>
+      <text x="455" y="228" fill="#cbd5e1" font-size="7.5">ISRIC SoilGrids v2.0</text>
+      <text x="455" y="241" fill="#cbd5e1" font-size="7.5">0–60 cm (piasek/ił/SOC)</text>
+      <text x="455" y="254" fill="#94a3b8" font-size="7">Klasy IUNG I–IV</text>
+
+      <rect x="590" y="196" width="136" height="74" rx="5" fill="#162231" stroke="#334155"/>
+      <text x="599" y="213" fill="#1abc9c" font-size="8.5" font-weight="700">5. Hydrologiczne</text>
+      <text x="599" y="228" fill="#cbd5e1" font-size="7.5">IMGW-PIB Hydro API</text>
+      <text x="599" y="241" fill="#cbd5e1" font-size="7.5">OSM Overpass (rowy)</text>
+      <text x="599" y="254" fill="#94a3b8" font-size="7">Oczka · zadrzewienia</text>
+    </g>
+  </svg>
+</div>
+<div class="caption">Rys. 2. Architektura warstwowa systemu AgroWoda KOWR i integracja 5 kategorii otwartych źródeł danych.</div>
+
+<h2>3.2 Architektura oprogramowania i moduły obliczeniowe</h2>
+<p>
+  Frontend zbudowano w <strong>React 18 z TypeScript</strong>, narzędziem <strong>Vite</strong> oraz <strong>Tailwind CSS</strong>.
+  Mapy działek korzystają z biblioteki <strong>Leaflet</strong> (BSD-2-Clause) z podkładami zdjęć
+  satelitarnych Esri, OpenStreetMap oraz oficjalnej warstwy katastralnej <strong>GUGiK KIEG WMS</strong>. Wykresy
+  (fala bilansu wodnego, 10-letni histogram KBW, kalendarz miesięczny) generowane są jako lekkie wektory SVG, dzięki
+  czemu idealnie skalują się zarówno na ekranie, jak i w wydruku PDF.
+</p>
+<p>
+  Logika dziedzinowa backendu (Node.js + Express + TypeScript) została ściśle rozdzielona na niezależne usługi:
+</p>
+<ul>
+  <li><code>parcelService.ts</code> — rozpoznawanie działek TERYT i geometrii wielokąta (ULDK, KIEG WMS GetFeatureInfo, GUGiK UUG, transformacja PUWG 1992 EPSG:2180 przez <code>proj4</code>).</li>
+  <li><code>elevationService.ts</code> — próbkowanie siatki wysokościowej (GUGiK NMT 1 m / Open-Meteo DEM), dopasowanie płaszczyzny spadku metodą najmniejszych kwadratów, ekspozycja stoku i lokalizacja najniższego punktu działki.</li>
+  <li><code>meteoService.ts</code> — 10-letnie dane NASA POWER Agroclimatology, pełny wzór FAO-56 Penman-Monteith <em>ET</em><sub>0</sub>, doszywanie ostatnich dni i 7-dniowej prognozy z Open-Meteo oraz najbliższa stacja IMGW-PIB Synop.</li>
+  <li><code>satelliteService.ts</code> — wyszukiwanie scen Sentinel-2 L2A w AWS Earth Search STAC, zakresowy odczyt COG przez bibliotekę <code>geotiff</code>, filtrowanie chmur maską SCL, kalibracja odbicia i porównanie r/r.</li>
+  <li><code>soilService.ts</code> — pobór profilu glebowego 0–60 cm z ISRIC SoilGrids, równania pedotransferowe Saxton &amp; Rawls (2006) oraz klasyfikacja do kategorii podatności IUNG-PIB I–IV.</li>
+  <li><code>hydrologyService.ts</code> — najbliższe wodowskazy IMGW-PIB oraz wieloserwerowe zapytania Overpass OSM (rowy melioracyjne, cieki, oczka wodne, mokradła, zadrzewienia śródpolne).</li>
+  <li><code>waterEngine.ts</code> — deterministyczny silnik decyzyjny realizujący 5-etapową sekwencję KOWR oraz kalkulator niepewności i źródeł danych.</li>
+  <li><code>excelReportService.ts</code> i <code>storageService.ts</code> — eksport 5-arkuszowych raportów ExcelJS (<code>.xlsx</code>) oraz pamięć trwała SQLite z buforowaniem TTL.</li>
+</ul>
+
+<h2>3.3 Model danych, pamięć podręczna SQLite i zapisane raporty</h2>
+<p>
+  Warstwa trwałości (<code>storageService.ts</code>) wykorzystuje wbudowany w Node.js 22 moduł <code>node:sqlite</code>
+  (z automatycznym fallbackiem do atomowego pliku JSON na starszych wersjach Node), co <strong>całkowicie eliminuje
+  problemy z kompilacją natywnych dodatków C++ (<code>node-gyp</code>) w systemie Windows</strong>. Baza przechowuje
+  dwie tabele:
+</p>
+<ul>
+  <li><code>reports</code> — zapisane pełne raporty gospodarstwa (metadane indeksowane + pełny dokument JSON analizy), umożliwiające natychmiastowy powrót do raportu, ponowny wydruk PDF, eksport Excel oraz porównanie do 4 działek obok siebie.</li>
+  <li><code>api_cache</code> — bufor z czasem wygasania (TTL) dla zapytań do zewnętrznych API: 30 dni dla gleby i NMT, 14 dni dla granic działek, 24 h dla scen Sentinel-2, 12 h dla archiwum 10-letniego meteo oraz 30 min dla odczytów IMGW-PIB.</li>
+</ul>
+
+<!-- ========================================================================= -->
+<!-- ROZDZIAŁ 4: PRZEBIEG ANALIZY I METODYKA NAUKOWA                           -->
+<!-- ========================================================================= -->
+<h1 class="page-break"><span class="num">4.</span>Przebieg analizy i metodyka naukowa krok po kroku</h1>
+
+<h2>4.1 Krok 1: Identyfikacja działki ewidencyjnej (ULDK / KIEG) i katalog 12 upraw</h2>
+<p>
+  Rolnik wskazuje działkę na jeden z trzech sposobów: wpisuje pełny identyfikator <strong>TERYT</strong> (np.
+  <code>040704_2.0007.68</code>), wyszukuje miejscowość lub gminę (przez oficjalną Usługę Uniwersalnego Geokodowania
+  <strong>GUGiK UUG</strong>) albo klika bezpośrednio na pole na mapie. Na podstawie pobranego wielokąta WKT system
+  oblicza dokładną powierzchnię działki (ha), obwód (m), środek ciężkości (centroid) i prostokąt ograniczający (bbox).
+  W przypadku chwilowego ograniczenia częstotliwości po stronie ULDK system automatycznie przełącza się na zapytanie
+  <strong>KIEG WMS <code>GetFeatureInfo</code></strong>, pozyskuje TERYT i ponawia pobór geometrii (z obsługą układów
+  EPSG:4326 i EPSG:2180).
+</p>
+
+<div class="figure">
+  <div class="figure-frame">
+    <img src="screen_analyzer.png" alt="Ekran główny AgroWoda KOWR — wybór działki na mapie, uprawy i daty analizy" />
+  </div>
+  <div class="caption">Rys. 3. Ekran główny AgroWoda KOWR: wyszukiwarka TERYT/miejscowości, wybór uprawy i daty (10 lat) oraz interaktywna mapa satelitarna z przełącznikiem granic działek GUGiK.</div>
+</div>
+
+<p>
+  Katalog upraw (<code>backend/src/data/crops.ts</code>) obejmuje <strong>12 głównych grup upraw w Polsce</strong>
+  zgodnie z metodyką Systemu Monitoringu Suszy Rolniczej IUNG-PIB oraz wytycznymi FAO-56. Każda uprawa posiada
+  krzywą współczynnika uprawowego <em>K</em><sub>c</sub> (faza początkowa, wzrostu, maksimum wegetacji, dojrzewania i spoczynku),
+  głębokość systemu korzeniowego <em>Z</em><sub>r</sub>, współczynnik dopuszczalnego wyczerpania <em>p</em> oraz krytyczne progi 60-dniowego
+  KBW dla czterech kategorii gleb.
+</p>
+
+<table class="avoid-break">
+  <thead>
+    <tr>
+      <th>Uprawa</th>
+      <th>K<sub>c</sub> (szczyt)</th>
+      <th>Korzenie Z<sub>r</sub></th>
+      <th>Okres krytyczny</th>
+      <th>Progi KBW<sub>60</sub> IUNG (Kat. I / II / III / IV)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td><strong>Zboża ozime</strong></td><td>1,15</td><td>1,20 m</td><td>kwi–cze (kłoszenie)</td><td>-140 / -170 / -210 / -250 mm</td></tr>
+    <tr><td><strong>Zboża jare</strong></td><td>1,15</td><td>0,90 m</td><td>maj–cze (strzelanie w źdźbło)</td><td>-120 / -150 / -190 / -230 mm</td></tr>
+    <tr><td><strong>Kukurydza</strong></td><td>1,20</td><td>1,10 m</td><td>cze–sie (kwitnienie)</td><td>-140 / -170 / -210 / -250 mm</td></tr>
+    <tr><td><strong>Rzepak i rzepik</strong></td><td>1,15</td><td>1,30 m</td><td>kwi–maj, sie (wschody)</td><td>-140 / -170 / -210 / -250 mm</td></tr>
+    <tr><td><strong>Ziemniak</strong></td><td>1,15</td><td>0,55 m</td><td>cze–sie (tuberyzacja)</td><td>-115 / -145 / -185 / -225 mm</td></tr>
+    <tr><td><strong>Burak cukrowy</strong></td><td>1,20</td><td>1,10 m</td><td>cze–sie (przyrost korzenia)</td><td>-150 / -180 / -220 / -260 mm</td></tr>
+    <tr><td><strong>Rośliny strączkowe</strong></td><td>1,15</td><td>0,85 m</td><td>maj–lip (kwitnienie)</td><td>-125 / -155 / -195 / -235 mm</td></tr>
+    <tr><td><strong>Warzywa gruntowe</strong></td><td>1,05</td><td>0,50 m</td><td>maj–sie (cały sezon)</td><td>-105 / -135 / -175 / -215 mm</td></tr>
+    <tr><td><strong>Drzewa owocowe (sady)</strong></td><td>1,00</td><td>1,20 m</td><td>maj–sie (dorastanie)</td><td>-145 / -175 / -215 / -255 mm</td></tr>
+    <tr><td><strong>Krzewy owocowe</strong></td><td>1,05</td><td>0,60 m</td><td>maj–lip (owocowanie)</td><td>-115 / -145 / -185 / -225 mm</td></tr>
+    <tr><td><strong>Truskawka</strong></td><td>0,90</td><td>0,35 m</td><td>maj–lip (kwitnienie/zbiór)</td><td>-100 / -130 / -170 / -210 mm</td></tr>
+    <tr><td><strong>Łąki i pastwiska (TUZ)</strong></td><td>1,00</td><td>0,85 m</td><td>maj–sie (odrost pokosów)</td><td>-130 / -160 / -200 / -240 mm</td></tr>
+  </tbody>
+</table>
+
+<h2>4.2 Krok 2: 10-letni bilans wodny FAO-56 Penman-Monteith i KBW IUNG-PIB</h2>
+<p>
+  Dla współrzędnych środka działki system pobiera <strong>10 pełnych lat dziennych obserwacji meteorologicznych</strong>
+  kończących się na wybranej dacie analizy (<code>analysisDate</code>) z bazy <strong>NASA POWER Agroclimatology</strong>
+  (temperatura minimalna, maksymalna i średnia, opad skorygowany <code>PRECTOTCORR</code>, promieniowanie słoneczne
+  <code>ALLSKY_SFC_SW_DWN</code>, wilgotność względna <code>RH2M</code>, prędkość wiatru na wysokości 2 m
+  <code>WS2M</code> oraz wskaźniki uwilgotnienia gleby <code>GWETTOP</code> i <code>GWETROOT</code>). Dla dat
+  bieżących (z ostatnich 85 dni) system automatycznie doszywa najświeższe dni oraz <strong>7-dniową prognozę opadów i
+  ewapotranspiracji z Open-Meteo</strong>, niwelując 2–4-dniowe opóźnienie publikacji satelitarnej NASA.
+</p>
+<p>
+  Dobowa ewapotranspiracja wskaźnikowa <em>ET</em><sub>0</sub> wyznaczana jest pełnym równaniem <strong>FAO-56 Penman-Monteith</strong>
+  (Allen, Pereira, Smith, 1998/2025), a następnie przeliczana na zapotrzebowanie uprawy <em>ET</em><sub>c</sub> i 60-dniowy Klimatyczny
+  Bilans Wodny zgodny z IUNG-PIB:
+</p>
+
+<div class="formula-box">ET0 = [ 0,408·Δ·Rn + γ·(900 / (Tmean + 273))·u2·(es − ea) ] / [ Δ + γ·(1 + 0,34·u2) ]  [mm/dzień]
+
+ETc(d) = Kc(uprawa, DOY(d)) · ET0(d)                              [mm/dzień]
+KBW_60 = Σ_{i=0..59} ( P(d − i) − ET0(d − i) )                    [mm / 60 dni]
+Bilans_uprawy_30 = Σ_{i=0..29} ( P(d − i) − ETc(d − i) )          [mm / 30 dni]</div>
+
+<p>
+  Dodatkowo dla całego 10-lecia wyznaczane są: (1) seria roczna <em>KBW</em><sub>60</sub> dokładnie dla tego samego okna
+  kalendarzowego w każdym z 10 lat (co pozwala policzyć anomalię z-score oraz częstość przekraczania progu IUNG),
+  (2) profil miesięczny marzec–październik wskazujący miesiące szczytowego ryzyka na danej działce (np. maj–lipiec),
+  (3) długość bieżącego i najdłuższego w 60 dniach ciągu bezopadowego (&lt; 1 mm/d) oraz (4) udział opadów nawalnych
+  (&ge; 20 mm/d), które zwiększają ryzyko spływu powierzchniowego.
+</p>
+
+<h2>4.3 Krok 3: Teledetekcja satelitarna Sentinel-2 L2A (NDVI, NDMI, maska SCL)</h2>
+<p>
+  System odpytuje bezpłatny katalog <strong>AWS Earth Search STAC API</strong> (<code>sentinel-2-l2a</code>) o
+  zobrazowania pokrywające prostokąt działki w oknie 60 dni przed datą analizy (oraz scenę referencyjną z analogicznego
+  okresu rok wcześniej). Za pomocą biblioteki <code>geotiff</code> pobierane są metodą <em>HTTP Range Request</em>
+  wyłącznie piksele pokrywające działkę z czterech pasm Cloud-Optimized GeoTIFF: <strong>B04 (Red, 10 m)</strong>,
+  <strong>B08 (NIR, 10 m)</strong>, <strong>B11 (SWIR1, 20 m)</strong> oraz <strong>SCL (Scene Classification Layer, 20 m)</strong>.
+</p>
+
+<div class="formula-box">NDVI  = (B08_NIR − B04_Red)   / (B08_NIR + B04_Red)    # kondycja i gęstość biomasy
+NDMI  = (B08_NIR − B11_SWIR1) / (B08_NIR + B11_SWIR1)  # zawartość wody w liściach
+ΔNDVI = NDVI_bieżący − NDVI_rok_poprzedni              # anomalia rok do roku</div>
+
+<p>
+  Z obliczeń odrzucane są piksele sklasyfikowane przez warstwę SCL jako chmury, cienie chmur, śnieg i woda (pozostają
+  wyłącznie klasy <code>4</code> — roślinność i <code>5</code> — gleba odkryta). Jeżeli udział ważnych pikseli na
+  działce jest mniejszy niż 25%, scena jest odrzucana i sprawdzany jest kolejny kandydat.
+</p>
+<div class="callout">
+  <strong>Interpretacja uwzględniająca specyfikę uprawy (wymóg KOWR pkt 3.2.1a):</strong> System wiąże wartości NDVI i
+  NDMI z fazą fenologiczną wybranej uprawy w dniu wykonania zdjęcia. Niskie NDVI w listopadzie lub po żniwach zbóż
+  ozimych jest rozpoznawane jako naturalna gleba odkryta / ściernisko (nie generuje fałszywego alarmu suszowego),
+  natomiast spadek NDMI i NDVI w fazie kłoszenia zbóż lub kwitnienia kukurydzy podnosi ocenę stresu wodnego.
+</div>
+
+<h2>4.4 Krok 4: Gleba (SoilGrids, Saxton &amp; Rawls 2006), rzeźba terenu (NMT 1 m) i hydrologia</h2>
+<p>
+  Właściwości gleby pobierane są z <strong>ISRIC SoilGrids v2.0</strong> (rozdzielczość 250 m) jako średnia ważona
+  głębokością z czterech poziomów (0–5, 5–15, 15–30, 30–60 cm): udział piasku (<em>S</em>), pyłu, iłu (<em>C</em>), zawartość węgla
+  organicznego (SOC przeliczany na zawartość próchnicy współczynnikiem Van Bemmelena 1,724) oraz gęstość
+  objętościowa. Zastosowanie równań pedotransferowych <strong>Saxton &amp; Rawls (2006)</strong> pozwala wyznaczyć
+  pojemność polową (<em>θ</em><sub>FC</sub>), punkt trwałego więdnięcia (<em>θ</em><sub>PWP</sub>), przewodnictwo nasycone (<em>K</em><sub>sat</sub>)
+  oraz <strong>retencję użyteczną AWC</strong> w warstwie 0–60 cm i w strefie korzeniowej uprawy (<em>Z</em><sub>r</sub>):
+</p>
+
+<div class="formula-box">Próchnica [%] = (SOC [g/kg] / 10) · 1,724
+θ_PWP = f(S, C, OM) przy 1500 kPa  |  θ_FC = f(S, C, OM) przy 33 kPa
+AWC [mm/m] = (θ_FC − θ_PWP) · 1000 |  AWC_korz = AWC · Z_r  |  RAW = AWC_korz · p</div>
+
+<table class="avoid-break">
+  <thead>
+    <tr>
+      <th>Kategoria IUNG-PIB</th>
+      <th>Charakterystyka gleby</th>
+      <th>Kryterium w modelu (piasek / ił / AWC)</th>
+      <th>Podatność na suszę</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td><strong>Kategoria I</strong></td><td>Bardzo lekka (piaski luźne, słabogliniaste)</td><td>Piasek &ge; 75% lub AWC &lt; 92 mm/m</td><td>Bardzo wysoka</td></tr>
+    <tr><td><strong>Kategoria II</strong></td><td>Lekka (piaski gliniaste, gliny piaszczyste)</td><td>Piasek &ge; 58% lub AWC &lt; 125 mm/m</td><td>Wysoka</td></tr>
+    <tr><td><strong>Kategoria III</strong></td><td>Średnia (gliny lekkie i średnie, pyły)</td><td>Wartości pośrednie (AWC 125–159 mm/m)</td><td>Umiarkowana</td></tr>
+    <tr><td><strong>Kategoria IV</strong></td><td>Ciężka (gliny ciężkie, iły, czarnoziemy)</td><td>Ił &ge; 26% lub AWC &ge; 160 mm/m</td><td>Niska (wysoka retencja)</td></tr>
+  </tbody>
+</table>
+
+<p>
+  <strong>Ukształtowanie terenu (NMT):</strong> Wewnątrz obrysu działki generowana jest siatka do 9 punktów,
+  transformowana do układu PUWG 1992 (EPSG:2180) i odpytywana jednym zbiorczym wywołaniem <strong>GUGiK NMT 1 m</strong>
+  (<code>GetHByPointList</code>), z automatycznym fallbackiem do <strong>Open-Meteo Elevation</strong>. Do wysokości
+  dopasowywana jest płaszczyzna <em>z</em>(<em>x</em>, <em>y</em>) = <em>ax</em> + <em>by</em> + <em>c</em> metodą najmniejszych kwadratów, wyznaczając średni i maksymalny
+  spadek (%), ekspozycję stoku (N–NW), wektor kierunku spływu oraz <strong>współrzędne najniższego punktu działki</strong>
+  (wskazywanego na mapie jako lokalizacja mikroretencji).
+</p>
+<p>
+  <strong>Hydrologia i otoczenie krajobrazowe:</strong> Moduł <code>hydrologyService.ts</code> pobiera najbliższe
+  wodowskazy z <strong>IMGW-PIB Hydro</strong> (wyłącznie dla dat bieżących) oraz analizuje otoczenie 1–1,5 km w
+  <strong>OpenStreetMap Overpass</strong> pod kątem rowów melioracyjnych (<code>ditch</code>, <code>drain</code>),
+  cieków, oczek wodnych, mokradeł oraz zadrzewień śródpolnych.
+</p>
+
+<h2>4.5 Krok 5: Zintegrowana ocena stanu wilgotności i identyfikacja przyczyn (Etapy 1–2)</h2>
+<p>
+  Zintegrowany <strong>Wskaźnik Ryzyka Suszy (0–100)</strong> łączy znormalizowane składowe: bieżący 60-dniowy bilans
+  <em>KBW</em><sub>60</sub> względem progu IUNG, krótkoterminowy bilans uprawy i ciągi bezopadowe (30 dni), uwilgotnienie strefy
+  korzeniowej, sygnał satelitarny Sentinel-2 (aktywny w okresie wegetacji) oraz podatność glebową i ryzyko spływu
+  stokowego. Osobno liczony jest wskaźnik <strong>10-letniej podatności wieloletniej</strong> (częstość lat z suszą,
+  najgorszy średni miesiąc, średni opad roczny i kategoria gleby) — rozróżniając bieżący epizod suszy od trwałego
+  ryzyka lokalnego.
+</p>
+
+<div class="formula-box">Ryzyko_bieżące = w_meteo · (0,52·S_KBW60 + 0,28·S_krótkoterm + 0,20·S_wilg_gleby)
+               + w_sat   · S_Sentinel2   +   0,12 · (0,70·S_gleba + 0,30·S_spadek)
+
+Skala klasyfikacji:  0–24 Optymalne | 25–44 Umiarkowany niedobór | 45–64 Podwyższone ryzyko
+                     65–82 Wysokie ryzyko / Susza rolnicza | 83–100 Krytyczny deficyt wody</div>
+
+<p>
+  W <strong>Etapie 2</strong> każda z pięciu kategorii przyczyn (<em>klimat, gleba, topografia, krajobraz, uprawa</em>)
+  otrzymuje obliczoną wagę znormalizowaną do <strong>100% udziału</strong> oraz zestaw konkretnych dowodów liczbowych.
+</p>
+
+<div class="figure">
+  <div class="figure-frame">
+    <img src="screen_report_top.png" alt="Dashboard wyników AgroWoda KOWR — karty KPI, banery oceny, wykres falowy i rekomendacje" />
+  </div>
+  <div class="caption">Rys. 4. Dashboard wyników AgroWoda KOWR dla działki na Kujawach (susza historyczna 2019-06-25, zboża ozime): karty KPI, ocena ryzyka, wykres bilansu, tabela rekomendacji oraz oś przyczyn deficytu.</div>
+</div>
+
+<h2>4.6 Krok 6: Generowanie rekomendacji (Etapy 3–5)</h2>
+<p>
+  Wszystkie rekomendacje powstają dynamicznie na podstawie spełnionych warunków liczbowych z Etapów 1 i 2:
+</p>
+<ul>
+  <li><strong>Etap 3A — Retencja krajobrazowa (NWRM):</strong> (1) zastawki spowalniające odpływ na rowie melioracyjnym — gdy wykryto rów w promieniu 750 m; (2) niecka infiltracyjna / mikrozbiornik w najniższym punkcie działki — gdy deniwelacja NMT &ge; 1,0 m, spadek &ge; 1,5% lub &ge; 2 dni/rok z opadem nawalnym; (3) strefa buforowa 5–10 m — gdy w odległości &le; 600 m istnieje oczko wodne lub mokradło; (4) pasy wiatrochronne — gdy brakuje zadrzewień śródpolnych w buforze 1 km.</li>
+  <li><strong>Etap 3B — Retencja glebowa:</strong> mulczowanie resztek pożniwnych i nawożenie organiczne (wzrost +1% próchnicy = ok. +15–20 mm retencji użytecznej) oraz międzyplony dobrane indywidualnie do gatunku uprawy głównej.</li>
+  <li><strong>Etap 4 — Agrotechnika:</strong> uprawa poprzecznostokowa (generowana warunkowo przy spadku NMT &ge; 2% lub lokalnie &ge; 4%), ograniczenie głębokiej orki na rzecz strip-till / uprawy uproszczonej (oszczędność 15–30 mm wody w warstwie ornej), płytkie zerwanie ścierniska po żniwach oraz dobór bardziej odpornych odmian przy wysokiej częstości susz w 10-leciu.</li>
+  <li><strong>Etap 5 — Nawadnianie (opcjonalne):</strong> cztery stany decyzji — <code>Niezalecane</code> (poza sezonem lub ryzyko &lt; 42), <code>Wstrzymaj — prognozowany opad</code> (gdy prognoza 48h &ge; 12 mm), <code>Monitoruj</code> (ryzyko 42–64) oraz <code>Zasadne nawadnianie uzupełniające</code> (ryzyko &ge; 65). Bezpieczna jednorazowa dawka wyliczana jest ze wzoru FAO-56 z ograniczeniem pojemnością gleby, aby wykluczyć wymywanie azotu:</li>
+</ul>
+
+<div class="formula-box">Dawka_mm = clamp( min(0,70·RAW, 0,45·Deficyt_30d) − 0,65·Opad_7d , 12 , Maks_dawka )
+Maks_dawka: 22 mm (Kat. I) | 28 mm (Kat. II) | 35 mm (Kat. III–IV)
+Objętość [m³/ha] = Dawka_mm · 10   |   Cała działka [m³] = Objętość_na_ha · Pow_ha</div>
+
+<div class="figure">
+  <div class="figure-frame">
+    <img src="screen_report_recs.png" alt="Tabela rekomendacji retencyjnych NWRM oraz udział procentowy przyczyn ograniczonej dostępności wody" />
+  </div>
+  <div class="caption">Rys. 5. Sekcja rekomendacji i analizy przyczyn dla działki na Kujawach (2019-06-25): konkretne uzasadnienia liczbowe z NMT i SoilGrids po lewej oraz udział procentowy czterech przyczyn deficytu wody po prawej.</div>
+</div>
+
+<h2 class="page-break">4.7 Krok 7: Transparentność, eksport raportu i porównywarka działek</h2>
+<p>
+  Każdy wygenerowany raport kończy się tabelą pochodzenia danych (nazwa usługi, zakres czasowy, rozdzielczość,
+  status pobrania), wyliczonym <strong>poziomem pewności analizy (%)</strong>, ramką jawnych braków danych oraz listą
+  czynników nieuwzględnionych w modelu (np. drożność drenów podziemnych, poziom wód gruntowych &gt; 1 m, lokalne
+  burze konwekcyjne). Raport zapisuje się automatycznie w SQLite, a rolnik może go wydrukować / zapisać jako
+  <strong>PDF A4</strong>, pobrać jako <strong>5-arkuszowy plik Excel (<code>.xlsx</code>)</strong> albo porównać
+  jednocześnie do 4 działek swojego gospodarstwa w zakładce <em>Zapisane Raporty</em>.
+</p>
+
+<table class="avoid-break">
+  <thead>
+    <tr>
+      <th>Arkusz Excel (<code>.xlsx</code>)</th>
+      <th>Zawartość merytoryczna eksportu ExcelJS</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td><strong>1. Podsumowanie</strong></td><td>Identyfikacja działki (TERYT, powierzchnia, obwód), ocena bieżąca i 10-letnia, KBW<sub>60</sub>, gleba, Sentinel-2, NMT i decyzja o nawadnianiu</td></tr>
+    <tr><td><strong>2. Przyczyny</strong></td><td>Znormalizowane udziały procentowe (%) wszystkich 5 kategorii przyczyn oraz konkretne dowody liczbowe</td></tr>
+    <tr><td><strong>3. Rekomendacje</strong></td><td>Pełna tabela działań z podziałem na etapy (Retencja krajobrazowa &rarr; glebowa &rarr; agrotechnika &rarr; nawadnianie), terminy i priorytety</td></tr>
+    <tr><td><strong>4. Historia 10 lat</strong></td><td>Roczne zestawienie KBW<sub>60</sub>, sum opadów i ewapotranspiracji dla wybranego okna kalendarzowego z 10 lat + profil miesięczny</td></tr>
+    <tr><td><strong>5. Źródła i niepewność</strong></td><td>Pochodzenie i status wszystkich usług API, poziom pewności (%), jawne braki danych oraz czynniki poza modelem</td></tr>
+  </tbody>
+</table>
+
+<div class="figure">
+  <div class="figure-frame">
+    <img src="screen_reports_list.png" alt="Widok Zapisane Raporty — archiwum analiz gospodarstwa z możliwością porównania działek i eksportu Excel" />
+  </div>
+  <div class="caption">Rys. 6. Zakładka „Zapisane Raporty”: archiwum analiz zapisane w lokalnej bazie SQLite z eksportem do Excela oraz porównywarką priorytetów retencji dla wielu działek gospodarstwa.</div>
+</div>
+
+<!-- ========================================================================= -->
+<!-- ROZDZIAŁ 5: ŹRÓDŁA DANYCH, TECHNOLOGIE I LICENCJE                         -->
+<!-- ========================================================================= -->
+<h1 class="page-break"><span class="num">5.</span>Źródła danych, stos technologiczny i licencje</h1>
+
+<h2>5.1 Wykaz źródeł danych: pobór na bieżąco vs buforowanie (TTL cache)</h2>
+<p>
+  W pełnej zgodności z §4.2 pkt 4–5 i §5.2 zadania konkursowego <strong>żadne wyniki analiz ani rekomendacje nie są
+  przygotowane wcześniej</strong>. Wszystkie dane dla analizowanej działki i daty pobierane są na żywo w momencie
+  zapytania, a jedynym buforowaniem jest pamięć podręczna SQLite (TTL cache) skracająca powtórne zapytania i
+  chroniąca publiczne API przed przeciążeniem. Wyłącznie stałe współczynniki agronomiczne 12 upraw (tablice FAO-56
+  <em>K</em><sub>c</sub>, <em>Z</em><sub>r</sub> i progi IUNG) stanowią wbudowaną wiedzę dziedzinową w pliku <code>backend/src/data/crops.ts</code>.
+</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Kategoria</th>
+      <th>Źródło / Interfejs API</th>
+      <th>Zakres i rozdzielczość</th>
+      <th>Pobór / TTL Cache</th>
+      <th>Licencja / Warunki</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Przestrzenne (EGiB)</strong></td>
+      <td>GUGiK ULDK, KIEG WMS, GUGiK UUG</td>
+      <td>Granice działek całej Polski (dokładność katastralna)</td>
+      <td>Na bieżąco (cache 14 dni)</td>
+      <td>Otwarte dane publiczne GUGiK (ustawa PGiK)</td>
+    </tr>
+    <tr>
+      <td><strong>Przestrzenne (Teren)</strong></td>
+      <td>GUGiK NMT (fallback: Open-Meteo Elevation)</td>
+      <td>Siatka 9 pkt / działkę; 1 m (Polska) lub 30 m (DEM)</td>
+      <td>Na bieżąco (cache 30 dni)</td>
+      <td>Dane publiczne GUGiK / CC-BY 4.0</td>
+    </tr>
+    <tr>
+      <td><strong>Meteorologiczne</strong></td>
+      <td>NASA POWER AG, Open-Meteo Forecast, IMGW Synop</td>
+      <td>10 lat dobowo (P, T, R<sub>s</sub>, RH, u<sub>2</sub>) + prognoza 7d</td>
+      <td>Na bieżąco (12h / 2h / 30 min)</td>
+      <td>NASA Public Domain / CC-BY 4.0 / IMGW Publiczne</td>
+    </tr>
+    <tr>
+      <td><strong>Satelitarne</strong></td>
+      <td>Copernicus Sentinel-2 L2A (AWS Earth Search STAC)</td>
+      <td>10 m (B04/B08) i 20 m (B11/SCL), okno 60d + rok poprz.</td>
+      <td>Na bieżąco COG Range (24h)</td>
+      <td>Copernicus Free, Full and Open Data Policy</td>
+    </tr>
+    <tr>
+      <td><strong>Glebowe</strong></td>
+      <td>ISRIC SoilGrids v2.0 (REST API)</td>
+      <td>Profil 0–60 cm (4 warstwy), 250 m</td>
+      <td>Na bieżąco (cache 30 dni)</td>
+      <td>CC-BY 4.0 (ISRIC World Soil Information)</td>
+    </tr>
+    <tr>
+      <td><strong>Hydrologiczne</strong></td>
+      <td>IMGW-PIB Hydro, OpenStreetMap Overpass</td>
+      <td>Wodowskazy IMGW + sieć rowów/cieków/oczek (1,5 km)</td>
+      <td>Na bieżąco (30 min / 7 dni)</td>
+      <td>Dane Publiczne IMGW / ODbL (OSM)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>5.2 Stos programowy, biblioteki otwarte oraz zakres użycia narzędzi AI</h2>
+<p>
+  Wszystkie wykorzystane komponenty mają otwarte, liberalne licencje OSI (MIT, BSD-2-Clause, ISC, Apache-2.0) umożliwiające nieograniczone wykorzystanie i
+  przeniesienie praw zgodnie z §2 ust. 10 i §5 Regulaminu zadania konkursowego. Stałe tablice naukowe 12 upraw (<code>backend/src/data/crops.ts</code>) opracowano na podstawie publikacji FAO-56 (2025) i IUNG-PIB w dniu <strong>2026-11-21</strong>.
+</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Warstwa</th>
+      <th>Biblioteki / Komponenty</th>
+      <th>Zastosowanie</th>
+      <th>Licencja</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td><strong>Frontend</strong></td><td>React 18, TypeScript, Vite, Tailwind CSS, lucide-react, axios</td><td>Interfejs rolnika, formularze, dashboard Flat Able, wykresy SVG</td><td>MIT / ISC / Apache-2.0</td></tr>
+    <tr><td><strong>Mapy GIS</strong></td><td>Leaflet, Esri World Imagery, OpenStreetMap, GUGiK KIEG WMS</td><td>Wybór działki, granice EGiB, wektor spływu i punkt mikroretencji</td><td>BSD-2-Clause / ODbL</td></tr>
+    <tr><td><strong>Backend</strong></td><td>Node.js 22, Express, TypeScript, cors, dotenv</td><td>REST API, równoległa orkiestracja 5 źródeł, silnik KOWR</td><td>MIT / BSD-2-Clause</td></tr>
+    <tr><td><strong>Geoprzestrzenne</strong></td><td><code>geotiff</code>, <code>proj4</code></td><td>Zakresowy odczyt COG Sentinel-2 i konwersje EPSG:4326/2180/UTM</td><td>MIT</td></tr>
+    <tr><td><strong>Dane i Raporty</strong></td><td><code>node:sqlite</code> (wbudowany), <code>exceljs</code>, <code>swagger-ui-express</code></td><td>Baza raportów i TTL cache, eksport 5-arkuszowy XLSX, Swagger UI</td><td>MIT</td></tr>
+    <tr><td><strong>Testy</strong></td><td>Jest, ts-jest, Supertest</td><td>Testy jednostkowe wzorów naukowych i testy integracyjne API</td><td>MIT</td></tr>
+  </tbody>
+</table>
+
+<p>
+  <strong>Zakres zastosowania sztucznej inteligencji (wymóg KOWR §4.2 pkt 6 i §5.1):</strong> W czasie działania
+  aplikacji silnik decyzyjny <strong>nie korzysta z zewnętrznych płatnych modeli LLM</strong> — obliczenia i
+  rekomendacje są w 100% deterministyczne, oparte na literaturze naukowej (FAO-56, IUNG, Saxton &amp; Rawls, NWRM),
+  powtarzalne i wolne od halucynacji oraz kosztów tokenów. Narzędzia AI (Google Antigravity / Gemini) zostały
+  wykorzystane wyłącznie na etapie projektowania, pisania kodu źródłowego, generowania grafiki okładkowej oraz
+  redakcji dokumentacji, przy pełnej weryfikacji testami automatycznymi i na żywych danych API.
+</p>
+
+<!-- ========================================================================= -->
+<!-- ROZDZIAŁ 6: WERYFIKACJA, TESTY I WYNIKI                                   -->
+<!-- ========================================================================= -->
+<h1 class="page-break"><span class="num">6.</span>Weryfikacja, testy i wyniki na rzeczywistych działkach</h1>
+
+<h2>6.1 Działanie na żywo, odporność na limity i zabezpieczenia API</h2>
+<p>
+  W przeciwieństwie do prototypów opartych o zbiory demonstracyjne, w aplikacji AgroWoda <strong>każdy z 5 modułów
+  danych działa w pełni na żywo dla dowolnej działki w Polsce</strong>. Podczas testów integracyjnych w warunkach
+  rzeczywistych (współdzielona sieć wydarzenia) wykryto i rozwiązano trzy krytyczne zagrożenia dla stabilności:
+</p>
+<ul>
+  <li><strong>Limit dzienny Open-Meteo Archive (HTTP 429):</strong> jako podstawowe 10-letnie źródło meteorologiczne wdrożono bezkluczowe <strong>NASA POWER Agroclimatology</strong> (odpowiedź ok. 1,9 s za 10 lat dobowych danych), z Open-Meteo Archive jako automatycznym fallbackiem i Open-Meteo Forecast do prognozy 7-dniowej.</li>
+  <li><strong>Zabezpieczenie strumieniowe przed tarpitem ULDK GUGiK:</strong> serwery ULDK przy dużym ruchu potrafią zwracać sztuczną odpowiedź EWKB (&gt;100 MB zaczynającą się od <code>0101000020</code>). Nasz klient przerywa takie połączenie już w pierwszym pakiecie (~150 ms), ponawia próbę z naprzemiennym układem SRID 4326/2180 oraz posiada niezależny fallback przez <strong>KIEG WMS GetFeatureInfo</strong>.</li>
+  <li><strong>Harmonizacja pasm Sentinel-2 L2A (Baseline 04.00):</strong> weryfikacja surowych pikseli COG na AWS Earth Search ujawniła, że pliki COG są już zharmonizowane do zakresu DN 0–10000 mimo etykiety <code>offset=-0.1</code> w metadanych STAC. Wdrożono automatyczną detekcję przesunięcia, uzyskując fizycznie dokładne wartości NDVI i NDMI w całym 10-leciu (2016–2026).</li>
+</ul>
+
+<h2>6.2 Walidacja dla rzeczywistych działek i dat historycznych</h2>
+<p>
+  Działanie prototypu zweryfikowano na żywo m.in. dla rzeczywistych działek rolnych w regionie Kujaw (strefa częstych
+  susz IUNG) oraz Mazowsza — zarówno dla historycznych lat suszowych (2019, 2025), jak i dla dnia bieżącego.
+</p>
+
+<div class="kpi-grid">
+  <div class="kpi-box">
+    <div class="kpi-label">Czas pełnej analizy</div>
+    <div class="kpi-val">12–14 s</div>
+    <div class="kpi-sub">Cel Jury KOWR: &le; 30 s</div>
+  </div>
+  <div class="kpi-box">
+    <div class="kpi-label">Kujawy 2019-06-25</div>
+    <div class="kpi-val">-81,7 mm</div>
+    <div class="kpi-sub">KBW₆₀ · Ryzyko 49/100</div>
+  </div>
+  <div class="kpi-box">
+    <div class="kpi-label">Sentinel-2 (2025)</div>
+    <div class="kpi-val">0,73 / 0,29</div>
+    <div class="kpi-sub">NDVI / NDMI (piksele COG)</div>
+  </div>
+  <div class="kpi-box">
+    <div class="kpi-label">Testy automatyczne</div>
+    <div class="kpi-val">7 / 7 PASS</div>
+    <div class="kpi-sub">Jest + Supertest (5,3 s)</div>
+  </div>
+</div>
+
+<table class="avoid-break">
+  <thead>
+    <tr>
+      <th>Scenariusz walidacji (na żywo)</th>
+      <th>Data / Uprawa</th>
+      <th>KBW<sub>60</sub></th>
+      <th>Gleba (SoilGrids)</th>
+      <th>Sentinel-2 (NDVI/NDMI)</th>
+      <th>Ocena i decyzja</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Kujawy</strong> (52,85&deg;N, 18,25&deg;E — Rys. 4–5)</td>
+      <td>2019-06-25 / Zboża ozime</td>
+      <td>-81,7 mm (3/10 lat)</td>
+      <td>Piasek 64%, AWC 59 mm, próchnica 2,67%</td>
+      <td>0,70 / 0,25 (scena 2019-06-25)</td>
+      <td>Podwyższone ryzyko (49/100), 4 rek. retencyjne, monitoruj nawadnianie</td>
+    </tr>
+    <tr>
+      <td><strong>Kujawy</strong> (52,85&deg;N, 18,25&deg;E)</td>
+      <td>2025-06-20 / Kukurydza</td>
+      <td>-92,2 mm (szczyt cze–sie)</td>
+      <td>AWC 59 mm (gleba lekka, kat. II)</td>
+      <td>0,73 / 0,29 (&Delta;NDVI +0,11 r/r)</td>
+      <td>Podwyższone ryzyko (45/100), priorytet: retencja glebowa i strip-till</td>
+    </tr>
+    <tr>
+      <td><strong>Mazowsze</strong> (<code>141201_1.0001.6509</code>, 0,26 ha)</td>
+      <td>Dzień bieżący (listopad) / Ziemniak</td>
+      <td>+16,6 mm (prognoza 7d: 17,2 mm)</td>
+      <td>Brak (strefa miejska — zgłoszono jawnie)</td>
+      <td>Okres poza wegetacją</td>
+      <td>Optymalne (7/100), nawadnianie niezalecane</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>6.3 Testy automatyczne (Jest + Supertest)</h2>
+<p>
+  Zestaw 7 testów automatycznych (<code>backend/src/__tests__/water.test.ts</code>) uruchamianych poleceniem
+  <code>npm test</code> na bazie w pamięci weryfikuje: (1) poprawność fizyczną FAO-56 Penman-Monteith <em>ET</em><sub>0</sub> dla lata
+  i zimy w Polsce, (2) różnicowanie gleby piaszczystej Kat. I i gliniastej Kat. IV w modelu Saxton &amp; Rawls,
+  (3) parsowanie geometrii WKT z ULDK, (4) krzywą fenologiczną <em>K</em><sub>c</sub>, (5) publiczny dostęp bez logowania do
+  <code>/api/health</code> i <code>/api/crops</code>, (6) pełny cykl <code>POST /api/analyze</code> &rarr; zapis
+  &rarr; eksport <code>.xlsx</code> &rarr; usunięcie oraz (7) odrzucanie błędnych dat spoza 10 lat i współrzędnych
+  spoza Polski.
+</p>
+
+<!-- ========================================================================= -->
+<!-- ROZDZIAŁ 7: BEZPIECZEŃSTWO, PRAWO I OGRANICZENIA                          -->
+<!-- ========================================================================= -->
+<h1 class="page-break"><span class="num">7.</span>Bezpieczeństwo, prywatność, prawo i ograniczenia</h1>
+
+<h2>7.1 Cyberbezpieczeństwo i minimalizacja danych (RODO)</h2>
+<p>
+  Zgodnie z §5.6 zadania konkursowego prototyp <strong>nie zbiera, nie przetwarza ani nie przechowuje żadnych danych
+  osobowych</strong> (brak rejestracji, imion, adresów e-mail czy numerów PESEL). Przetwarzane są wyłącznie otwarte
+  identyfikatory przestrzenne działek oraz publiczne dane środowiskowe. Warstwa API (<code>middleware/security.ts</code>)
+  implementuje podstawowe mechanizmy cyberbezpieczeństwa:
+</p>
+<ul>
+  <li>nagłówki bezpieczeństwa HTTP (<code>X-Content-Type-Options: nosniff</code>, <code>X-Frame-Options: SAMEORIGIN</code>, <code>Referrer-Policy</code>, <code>Permissions-Policy</code>, usunięcie <code>X-Powered-By</code>),</li>
+  <li>ograniczanie liczby zapytań (rate limiting per IP: 25 analiz/min, 60 wyszukań/min) chroniące zewnętrzne API,</li>
+  <li>ścisłą walidację danych wejściowych (zakres geograficzny Polski 48,5–55,2&deg;N i 13,8–24,5&deg;E, zakres dat 10 lat, limit rozmiaru żądania JSON 1 MB, limit strumieniowy 250 KB dla ULDK oraz parametryzowane zapytania SQL bez podatności SQL Injection).</li>
+</ul>
+
+<h2>7.2 Ramy prawne (Prawo wodne) i ograniczenia modelu</h2>
+<p>
+  Każda rekomendacja dotycząca piętrzenia wody w rowach melioracyjnych, budowy zbiornika retencyjnego czy poboru wody
+  do nawadniania zawiera w raporcie wyraźną adnotację o wymogach ustawy <strong>Prawo wodne</strong> (zgłoszenie
+  wodnoprawne dla małych zbiorników do 1000 m&sup2; i 3 m głębokości, uzgodnienie ze spółką wodną dla zastawek na
+  rowach oraz pozwolenie wodnoprawne przy poborze wód &gt; 5 m&sup3;/dobę średniorocznie).
+</p>
+<p>
+  <strong>Znane ograniczenia techniczne i merytoryczne (§4.2 pkt 8):</strong>
+</p>
+<ul>
+  <li><strong>Rozdzielczość przestrzenna:</strong> siatka meteorologiczna NASA POWER (~50 km) i Open-Meteo (~9 km) nie wychwytuje punktowych letnich burz nad pojedynczym polem; SoilGrids (250 m) jest modelem statystycznym i nie zastępuje analizy laboratoryjnej próchnicy i pH.</li>
+  <li><strong>Zachmurzenie satelitarne:</strong> brak bezchmurnej sceny Sentinel-2 w oknie 60 dni obniża pewność analizy i jest jawnie komunikowany rolnikowi.</li>
+  <li><strong>Historyczne dane IMGW-PIB:</strong> publiczne API IMGW udostępnia wyłącznie bieżące stany wód — w analizach historycznych odczyty te są celowo wyłączane.</li>
+  <li><strong>Czynniki terenowe poza danymi otwartymi:</strong> stan techniczny podziemnych drenów (sączków), poziom wód gruntowych poniżej 1 m, rzeczywista data siewu, obsada i konkretna odmiana uprawy.</li>
+</ul>
+
+<!-- ========================================================================= -->
+<!-- ROZDZIAŁ 8: URUCHOMIENIE I SKALOWALNOŚĆ                                   -->
+<!-- ========================================================================= -->
+<h1 class="page-break"><span class="num">8.</span>Uruchomienie prototypu i skalowalność w skali kraju</h1>
+
+<h2>8.1 Instrukcja uruchomienia (Windows / macOS / Linux)</h2>
+<p>
+  Prototyp wymaga wyłącznie środowiska <strong>Node.js 20 lub 22+</strong> (zalecane Node.js 22 — zero kompilacji C++).
+  Po pobraniu repozytorium uruchomienie wymaga dwóch poleceń:
+</p>
+
+<div class="formula-box"># Terminal 1 — Backend API (http://localhost:5000, Swagger UI: /api-docs)
+cd backend && copy .env.example .env && npm install && npm run dev
+
+# Terminal 2 — Aplikacja webowa (http://localhost:3000)
+cd frontend && npm install && npm run dev
+
+# Weryfikacja testami automatycznymi
+cd backend && npm test</div>
+
+<h2>8.2 Plan skalowania krajowego i szacunkowe koszty infrastruktury (§5.5)</h2>
+<p>
+  Prototyp obsługuje dowolną działkę ewidencyjną w Polsce, jednak udostępnienie go jednocześnie dziesiątkom tysięcy
+  rolników (np. jako moduł portalu KOWR lub eWniosekPlus) wymaga trzech zmian architektonicznych:
+</p>
+<ol>
+  <li><strong>Obsługa limitów zewnętrznych API:</strong> przeniesienie warstwy cache z lokalnego SQLite do klastra <strong>Redis + PostgreSQL/PostGIS</strong>, załadowanie lokalnej kopii statycznych zbiorów GUGiK (eksport EGiB Parquet z <code>opendata.geoportal.gov.pl</code>, krajowy NMT 1 m oraz mapa podatności gleb IUNG) — skracając czas odpowiedzi do &lt; 300 ms i całkowicie eliminując limity ULDK/SoilGrids.</li>
+  <li><strong>Aktualizacja danych i ruch szczytowy:</strong> cykliczne zadania wsadowe (nocna aktualizacja dobowych siatek IMGW/ERA5, przeliczanie indeksów Sentinel-2 co 5 dni po przelocie satelity dla siatki obrębów), kolejki zadań (BullMQ) dla analiz całych gospodarstw oraz CDN dla aplikacji frontendowej.</li>
+  <li><strong>Szacunkowy koszt infrastruktury (50–100 tys. aktywnych rolników/mies.):</strong> klaster aplikacyjny + PostGIS + Redis w chmurze UE lub rządowej (Chmura Krajowa) to ok. <strong>3 000–7 000 zł/mies.</strong> Wszystkie publiczne źródła danych (GUGiK, Copernicus, IMGW, NASA POWER, SoilGrids, OSM) pozostają w 100% bezpłatne.</li>
+</ol>
+
+<!-- ========================================================================= -->
+<!-- ZAŁĄCZNIKI                                                                -->
+<!-- ========================================================================= -->
+<h1 class="page-break">Załączniki</h1>
+
+<h2>Załącznik A: Najważniejsze punkty końcowe REST API</h2>
+<p>Pełna interaktywna specyfikacja OpenAPI 3.0 jest dostępna po uruchomieniu backendu pod adresem <code>http://localhost:5000/api-docs</code>.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Metoda i ścieżka</th>
+      <th>Opis działania</th>
+      <th>Dostęp</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td><code>GET /api/health</code></td><td>Status serwera oraz tryb warstwy trwałości (<code>node-sqlite</code> / <code>json</code>)</td><td>publiczny</td></tr>
+    <tr><td><code>GET /api/crops</code></td><td>Katalog 12 upraw z parametrami FAO-56 K<sub>c</sub>, Z<sub>r</sub> i progami IUNG</td><td>publiczny</td></tr>
+    <tr><td><code>GET /api/parcels/examples</code></td><td>Zweryfikowane przykładowe działki w różnych regionach Polski</td><td>publiczny</td></tr>
+    <tr><td><code>GET /api/parcels/lookup</code></td><td>Pobranie geometrii działki po TERYT (<code>?id=</code>) lub kliknięciu (<code>?lat=&amp;lng=</code>)</td><td>publiczny</td></tr>
+    <tr><td><code>GET /api/parcels/search</code></td><td>Wyszukiwanie miejscowości / gminy (GUGiK UUG / Nominatim)</td><td>publiczny</td></tr>
+    <tr><td><code>POST /api/analyze</code></td><td>Pełna 5-etapowa analiza działki dla dowolnej daty z ostatnich 10 lat</td><td>publiczny</td></tr>
+    <tr><td><code>GET /api/reports</code></td><td>Lista zapisanych raportów gospodarstwa w bazie SQLite</td><td>publiczny</td></tr>
+    <tr><td><code>GET /api/reports/:id</code></td><td>Pobranie pełnego zapisanego raportu JSON</td><td>publiczny</td></tr>
+    <tr><td><code>GET /api/reports/:id/export.xlsx</code></td><td>Eksport 5-arkuszowego raportu ExcelJS (<code>.xlsx</code>)</td><td>publiczny</td></tr>
+    <tr><td><code>DELETE /api/reports/:id</code></td><td>Usunięcie zapisanego raportu z bazy</td><td>publiczny</td></tr>
+    <tr><td><code>GET /api/methodology</code></td><td>Zestawienie sekwencji KOWR, źródeł danych i licencji</td><td>publiczny</td></tr>
+  </tbody>
+</table>
+
+<h2>Załącznik B: Kluczowe parametry i progi obliczeniowe systemu</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Parametr</th>
+      <th>Wartość w kodzie</th>
+      <th>Znaczenie operacyjne</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>Okno historii meteorologicznej</td><td>10 lat (3650+ dni)</td><td>Ocena wieloletniej podatności suszowej i normy lokalnej</td></tr>
+    <tr><td>Okno bilansu KBW</td><td>60 dni krocząco</td><td>Zgodność z okresami 6-dekadowymi IUNG-PIB</td></tr>
+    <tr><td>Próg dnia bezopadowego / ulewy</td><td>&lt; 1,0 mm / &ge; 20,0 mm/d</td><td>Długość ciągów bezopadowych oraz udział opadów nawalnych</td></tr>
+    <tr><td>Okno wyszukiwania Sentinel-2</td><td>60 dni przed datą analizy</td><td>Dobór najświeższej bezchmurnej sceny (&ge; 25% ważnych pikseli SCL)</td></tr>
+    <tr><td>Siatka próbkowania NMT</td><td>Do 9 pkt na działce</td><td>Szybki odczyt GUGiK NMT 1 m (~1,5–2,5 s) + płaszczyzna spadku</td></tr>
+    <tr><td>Próg uprawy poprzecznostokowej</td><td>Spadek &ge; 2,0% (lok. &ge; 4,0%)</td><td>Warunkowe uruchomienie rekomendacji przeciwerozyjnych</td></tr>
+    <tr><td>Promień detekcji rowów / oczek</td><td>750 m (rowy), 600 m (oczka)</td><td>Rekomendacje retencji korytowej (zastawki) i stref buforowych</td></tr>
+    <tr><td>Próg wstrzymania nawadniania</td><td>Prognoza 48h &ge; 12 mm</td><td>Ochrona przed zbędnym nawadnianiem przed nadchodzącym deszczem</td></tr>
+    <tr><td>Maks. jednorazowa dawka polewowa</td><td>22 / 28 / 35 mm</td><td>Ograniczenie przesiąkania wg kategorii gleby (I / II / III–IV)</td></tr>
+    <tr><td>Zakres geograficzny walidacji</td><td>48,5–55,2&deg;N; 13,8–24,5&deg;E</td><td>Zabezpieczenie analizy dla terytorium Rzeczypospolitej Polskiej</td></tr>
+    <tr><td>Limity TTL pamięci podręcznej</td><td>30 min – 30 dni</td><td>Redukcja obciążenia zewnętrznych API i przyspieszenie zapytań</td></tr>
+    <tr><td>Limit rozmiaru odpowiedzi ULDK</td><td>250 KB + detekcja <code>0101000020</code></td><td>Natychmiastowa ochrona przed tarpitem GUGiK</td></tr>
+  </tbody>
+</table>
+
+<h2>Załącznik C: Bibliografia naukowa</h2>
+<ol style="font-size: 8.8pt; line-height: 1.55;">
+  <li>Allen, R. G., Pereira, L. S., &amp; Smith, M. (2025). <em>Crop evapotranspiration: Guidelines for computing crop water requirements (FAO Irrigation and Drainage Paper No. 56, Rev. 1)</em>. Food and Agriculture Organization of the United Nations.</li>
+  <li>Doroszewski, A., Kozyra, J., Pudełko, R., Stuczyński, T., Jadczyszyn, J., Koza, P., Łopatka, A., &amp; Wróblewska, E. (2012). <em>Podstawy Systemu Monitoringu Suszy Rolniczej</em>. Instytut Uprawy Nawożenia i Gleboznawstwa – PIB, Puławy.</li>
+  <li>European Commission (2014). <em>Natural Water Retention Measures Policy Document</em>. Publications Office of the European Union.</li>
+  <li>European Commission (2015). <em>A Guide to Support the Selection, Design and Implementation of Natural Water Retention Measures in Europe</em>. Publications Office of the European Union.</li>
+  <li>Food and Agriculture Organization of the United Nations (2019). <em>Water scarcity management: Addressing water scarcity in agriculture and food systems</em>. FAO.</li>
+  <li>Minasny, B., Malone, B. P., McBratney, A. B., et al. (2017). <em>Soil carbon 4 per mille</em>. Geoderma, 292, 59–86.</li>
+  <li>Saxton, K. E., &amp; Rawls, W. J. (2006). <em>Soil Water Characteristic Estimates by Texture and Organic Matter for Hydrologic Solutions</em>. Soil Science Society of America Journal, 70(5), 1569–1578.</li>
+  <li>Żyłowska, K., &amp; Kozyra, J. (2025). <em>Zintegrowane monitorowanie suszy na potrzeby rolnictwa – przegląd systemów i wskaźników</em>. IUNG-PIB.</li>
+  <li>Polska Agencja Kosmiczna (2024). <em>Dane satelitarne dla administracji publicznej</em> (rozdz. 6.3.3 i 6.3.4).</li>
+  <li>Centrum Doradztwa Rolniczego w Brwinowie (2025). <em>Melioracje, retencja i gospodarka wodna w rolnictwie — E-poradnik</em>.</li>
+</ol>
+
+</body>
+</html>
